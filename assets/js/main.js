@@ -1,3 +1,86 @@
+$(document).ready(function() {
+    // تغییر وضعیت فیلد کد حسابداری
+    $('#autoAccountingCode').change(function() {
+        $('#accountingCode').prop('disabled', this.checked);
+    });
+
+    // مدیریت تب‌ها
+    $('#productTabs a').on('click', function (e) {
+        e.preventDefault()
+        $(this).tab('show')
+    });
+
+    // ذخیره دسته‌بندی جدید
+    $('#saveCategoryButton').on('click', function() {
+        saveCategory();
+    });
+
+    // تنظیمات انتخاب دسته‌بندی
+    $('#categoryModal').on('show.bs.modal', function (e) {
+        // باز کردن پنجره انتخاب دسته‌بندی
+    });
+
+    $('#categoryModal').on('hidden.bs.modal', function (e) {
+        // بستن پنجره انتخاب دسته‌بندی
+    });
+
+    $('ul.dx-treeview-node-container').on('click', 'li.dx-treeview-node', function () {
+        var categoryId = $(this).data('item-id');
+        $('#selectedCategoryId').val(categoryId);
+        $('#categoryModal').modal('hide');
+    });
+
+    $('dx-button[aria-label="تایید"]').on('click', function () {
+        var selectedCategoryId = $('#selectedCategoryId').val();
+        if (selectedCategoryId) {
+            $('#categoryModal').modal('hide');
+        } else {
+            alert('لطفاً یک دسته‌بندی انتخاب کنید.');
+        }
+    });
+
+    $('dx-button[aria-label="انصراف"]').on('click', function () {
+        $('#categoryModal').modal('hide');
+    });
+});
+
+function previewImage(input) {
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+        reader.onload = function(e) {
+            $('#productImagePreview').attr('src', e.target.result);
+        }
+        reader.readAsDataURL(input.files[0]);
+    }
+}
+
+function removeImage() {
+    $('#productImagePreview').attr('src', 'uploads/default-image/default person.png');
+    $('#productImage').val(''); // پاک کردن مقدار فیلد فایل
+}
+
+function saveCategory() {
+    var categoryName = $('#categoryName').val();
+    $.ajax({
+        url: '../categories/save_category.php', // آدرس فایل PHP برای ذخیره دسته‌بندی
+        type: 'POST',
+        data: { name: categoryName },
+        success: function(response) {
+            if (response.success) {
+                alert(response.message); // نمایش پیام موفقیت
+                $('#categoryModal').modal('hide'); // بستن modal
+                location.reload(); // رفرش صفحه
+            } else {
+                alert('خطا: ' + response.message); // نمایش پیام خطا
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error(xhr.responseText);
+            alert('خطا در ذخیره دسته‌بندی: ' + error);
+        }
+    });
+}
+
 // تنظیمات اولیه و متغیرهای جهانی
 document.addEventListener('DOMContentLoaded', function() {
     initializeApp();
@@ -104,3 +187,108 @@ function generateCode() {
         console.error('خطا در تولید کد:', error);
     }
 }
+
+// عملکرد مربوط به انتخاب دسته‌بندی در صفحه افزودن محصول
+function setupCategorySelector() {
+    const categoryButton = document.getElementById('categoryButton');
+    const categoryModal = document.getElementById('categoryModal');
+
+    if (categoryButton && categoryModal) {
+        categoryButton.addEventListener('click', () => {
+            // کد لازم برای باز کردن پنجره دسته‌بندی
+            categoryModal.style.display = 'block';
+        });
+
+        // بستن پنجره با کلیک خارج از آن
+        window.addEventListener('click', (event) => {
+            if (event.target == categoryModal) {
+                categoryModal.style.display = 'none';
+            }
+        });
+    }
+}
+$(document).ready(function() {
+    // تغییر وضعیت فیلد کد حسابداری
+    $('#autoAccountingCode').change(function() {
+        $('#accountingCode').prop('disabled', this.checked);
+    });
+
+    // مدیریت تب‌ها
+    $('#productTabs a').on('click', function (e) {
+        e.preventDefault()
+        $(this).tab('show')
+    });
+
+    // ذخیره دسته‌بندی جدید
+    $('#saveCategoryButton').on('click', function() {
+        saveCategory();
+    });
+
+    // تنظیمات انتخاب دسته‌بندی
+    $('#categoryModal').on('show.bs.modal', function (e) {
+        // باز کردن پنجره انتخاب دسته‌بندی
+    });
+
+    $('#categoryModal').on('hidden.bs.modal', function (e) {
+        // بستن پنجره انتخاب دسته‌بندی
+    });
+
+    $('ul.dx-treeview-node-container').on('click', 'li.dx-treeview-node', function () {
+        var categoryId = $(this).data('item-id');
+        $('#selectedCategoryId').val(categoryId);
+        $('#categoryModal').modal('hide');
+    });
+
+    $('dx-button[aria-label="تایید"]').on('click', function () {
+        var selectedCategoryId = $('#selectedCategoryId').val();
+        if (selectedCategoryId) {
+            $('#categoryModal').modal('hide');
+        } else {
+            alert('لطفاً یک دسته‌بندی انتخاب کنید.');
+        }
+    });
+
+    $('dx-button[aria-label="انصراف"]').on('click', function () {
+        $('#categoryModal').modal('hide');
+    });
+});
+
+function previewImage(input) {
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+        reader.onload = function(e) {
+            $('#productImagePreview').attr('src', e.target.result);
+        }
+        reader.readAsDataURL(input.files[0]);
+    }
+}
+
+function removeImage() {
+    $('#productImagePreview').attr('src', 'uploads/default-image/default person.png');
+    $('#productImage').val(''); // پاک کردن مقدار فیلد فایل
+}
+
+function saveCategory() {
+    var categoryName = $('#categoryName').val();
+    $.ajax({
+        url: '../categories/save_category.php', // آدرس فایل PHP برای ذخیره دسته‌بندی
+        type: 'POST',
+        data: { name: categoryName },
+        success: function(response) {
+            if (response.success) {
+                alert(response.message); // نمایش پیام موفقیت
+                $('#categoryModal').modal('hide'); // بستن modal
+                location.reload(); // رفرش صفحه
+            } else {
+                alert('خطا: ' + response.message); // نمایش پیام خطا
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error(xhr.responseText);
+            alert('خطا در ذخیره دسته‌بندی: ' + error);
+        }
+    });
+}
+
+// فراخوانی تابع
+setupCategorySelector();
