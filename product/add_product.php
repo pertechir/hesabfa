@@ -217,15 +217,15 @@ $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">بستن</button>
-        <button type="button" class="btn btn-primary" onclick="saveCategory()">ذخیره</button>
+        <button type="button" class="btn btn-primary" id="saveCategoryButton">ذخیره</button>
       </div>
     </div>
   </div>
 </div>
 
 <script src="../assets/js/jquery-3.6.0.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<script src="../assets/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="../assets/css/bootstrap.min.css">
 
 <script>
     $(document).ready(function() {
@@ -238,6 +238,11 @@ $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
         $('#productTabs a').on('click', function (e) {
             e.preventDefault()
             $(this).tab('show')
+        });
+
+        // ذخیره دسته‌بندی جدید
+        $('#saveCategoryButton').on('click', function() {
+            saveCategory();
         });
     });
 
@@ -257,21 +262,25 @@ $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
     function saveCategory() {
-      var categoryName = $('#categoryName').val();
-      $.ajax({
-        url: 'save_category.php', // آدرس فایل PHP برای ذخیره دسته‌بندی
-        type: 'POST',
-        data: { categoryName: categoryName },
-        success: function(response) {
-          alert(response); // نمایش پیام
-          $('#categoryModal').modal('hide'); // بستن modal
-          location.reload(); // رفرش صفحه
-        },
-        error: function(xhr, status, error) {
-          console.error(xhr.responseText);
-          alert('خطا در ذخیره دسته‌بندی: ' + error);
-        }
-      });
+        var categoryName = $('#categoryName').val();
+        $.ajax({
+            url: '../categories/save_category.php', // آدرس فایل PHP برای ذخیره دسته‌بندی
+            type: 'POST',
+            data: { name: categoryName },
+            success: function(response) {
+                if (response.success) {
+                    alert(response.message); // نمایش پیام موفقیت
+                    $('#categoryModal').modal('hide'); // بستن modal
+                    location.reload(); // رفرش صفحه
+                } else {
+                    alert('خطا: ' + response.message); // نمایش پیام خطا
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error(xhr.responseText);
+                alert('خطا در ذخیره دسته‌بندی: ' + error);
+            }
+        });
     }
 </script>
 
