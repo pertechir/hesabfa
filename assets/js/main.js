@@ -55,7 +55,7 @@ function previewImage(input) {
 }
 
 function removeImage() {
-    $('#productImagePreview').attr('src', 'uploads/default-image/default person.png');
+    $('#productImagePreview').attr('src', '/uploads/default-image/default-person.png.png');
     $('#productImage').val(''); // پاک کردن مقدار فیلد فایل
 }
 

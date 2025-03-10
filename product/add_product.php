@@ -1,4 +1,8 @@
 <?php
+include '../menu.php';
+?>
+<?php
+
 // includes/header.php را در اینجا قرار دهید
 include('../includes/header.php');
 
@@ -11,11 +15,6 @@ try {
     echo "اتصال به پایگاه داده با خطا مواجه شد: " . $e->getMessage();
     exit;
 }
-
-// دریافت لیست دسته‌بندی‌ها از پایگاه داده
-$query = "SELECT * FROM categories";
-$stmt = $db->query($query);
-$categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 ?>
 
@@ -38,7 +37,7 @@ $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         <!-- تصویر محصول -->
                         <div class="form-group">
                             <label>تصویر محصول:</label>
-                            <img id="productImagePreview" src="uploads/default-image/default person.png" alt="تصویر پیش‌فرض محصول" class="img-thumbnail" style="max-width: 150px; height: 150px;">
+                            <img id="productImagePreview" src="../uploads/default-image/default-person.png" alt="تصویر پیش‌فرض محصول" class="img-thumbnail" style="max-width: 150px; height: auto; display: block;">
                             <div class="mt-2">
                                 <label for="productImage" class="btn btn-primary">انتخاب</label>
                                 <input type="file" id="productImage" name="productImage" style="display:none;" onchange="previewImage(this);">
@@ -51,12 +50,9 @@ $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         <div class="form-group">
                             <label for="accountingCode">کد حسابداری:</label>
                             <div class="input-group">
-                                <input type="text" class="form-control" id="accountingCode" name="accountingCode" placeholder="کد حسابداری" disabled>
+                                <input type="text" class="form-control" id="accountingCode" name="accountingCode" placeholder="کد حسابداری">
                                 <div class="input-group-append">
-                                    <div class="input-group-text">
-                                        <input type="checkbox" id="autoAccountingCode" name="autoAccountingCode" checked>
-                                        <label class="ml-1" for="autoAccountingCode">خودکار</label>
-                                    </div>
+                                    <button type="button" class="btn btn-secondary" onclick="generateAccountingCode()">تولید کد حسابداری</button>
                                 </div>
                             </div>
                         </div>
@@ -70,21 +66,47 @@ $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         <!-- کد کالا -->
                         <div class="form-group">
                             <label for="productCode">کد کالا:</label>
-                            <input type="text" class="form-control" id="productCode" name="productCode" placeholder="کد کالا">
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="productCode" name="productCode" placeholder="کد کالا">
+                                <div class="input-group-append">
+                                    <button type="button" class="btn btn-secondary" onclick="generateProductCode()">تولید کد کالا</button>
+                                </div>
+                            </div>
                         </div>
 
                         <!-- بارکد -->
                         <div class="form-group">
                             <label for="barcode">بارکد:</label>
-                            <input type="text" class="form-control" id="barcode" name="barcode" placeholder="بارکد (با ; جدا کنید)">
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="barcode" name="barcode" placeholder="بارکد (با ; جدا کنید)">
+                                <div class="input-group-append">
+                                    <button type="button" class="btn btn-secondary" onclick="generateBarcode()">تولید بارکد</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- بارکد اصلی -->
+                        <div class="form-group">
+                            <label for="mainBarcode">بارکد اصلی:</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="mainBarcode" name="mainBarcode" placeholder="بارکد اصلی">
+                                <div class="input-group-append">
+                                    <input type="checkbox" id="noBarcode" name="noBarcode" onchange="toggleBarcodeGeneration()">
+                                    <label for="noBarcode" class="ml-1">محصول بارکد ندارد</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group" id="barcodeGenerationGroup" style="display:none;">
+                            <button type="button" class="btn btn-secondary" onclick="generateMainBarcode()">تولید بارکد اصلی</button>
                         </div>
 
                         <!-- دسته‌بندی -->
                         <div class="form-group">
                             <label for="category">دسته‌بندی:</label>
-                            <button type="button" class="btn btn-link" data-toggle="modal" data-target="#categoryModal">انتخاب دسته‌بندی</button>
-                            <input type="hidden" id="selectedCategoryId" name="category">
+                            <select id="category" name="category" class="form-control"></select>
                         </div>
+
                     </div>
                 </div>
             </div>
@@ -189,106 +211,80 @@ $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
     </form>
 </div>
 
-<!-- Modal -->
-<div class="modal fade" id="categoryModal" tabindex="-1" role="dialog" aria-labelledby="categoryModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="categoryModalLabel">انتخاب دسته‌بندی</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="بستن">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <div class="dx-overlay-wrapper dx-dropdowneditor-overlay dx-popup-wrapper" data-bind="dxControlsDescendantBindings: true">
-          <div class="dx-overlay-content dx-rtl dx-popup-normal dx-resizable" tabindex="-1">
-            <div class="dx-popup-content" id="dx-category-popup-content">
-              <dx-validator _ngcontent-c55=""></dx-validator>
-              <app-category-fragment _ngcontent-c55="" _nghost-c57="">
-                <dx-tree-view _ngcontent-c57="" class="category-tree dx-treeview-with-search dx-widget dx-rtl dx-collection dx-treeview" datastructure="plain" displayexpr="name" keyexpr="id" parentidexpr="parentId" style="width: auto; height: 250px;">
-                  <div class="dx-treeview-search dx-show-invalid-badge dx-textbox dx-texteditor dx-editor-outlined dx-searchbox dx-show-clear-button dx-texteditor-empty dx-widget dx-rtl">
-                    <div class="dx-texteditor-container">
-                      <div class="dx-texteditor-input-container">
-                        <div class="dx-icon dx-icon-search"></div>
-                        <input autocomplete="off" aria-label="جستجو" class="dx-texteditor-input" type="text" spellcheck="false" tabindex="0" role="textbox" dir="ltr">
-                        <div data-dx_placeholder="جستجو" class="dx-placeholder"></div>
-                      </div>
-                      <div class="dx-texteditor-buttons-container">
-                        <span class="dx-clear-button-area">
-                          <span class="dx-icon dx-icon-clear"></span>
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="dx-scrollable dx-rtl dx-visibility-change-handler dx-scrollable-vertical dx-scrollable-simulated">
-                    <div class="dx-scrollable-wrapper">
-                      <div class="dx-scrollable-container">
-                        <div class="dx-scrollable-content" tabindex="0" role="tree">
-                          <ul class="dx-treeview-node-container dx-treeview-node-container-opened" role="group">
-                            <?php foreach ($categories as $category): ?>
-                              <li class="dx-treeview-node dx-treeview-item-without-checkbox" data-item-id="<?php echo $category['id']; ?>" role="treeitem" aria-label="<?php echo $category['name']; ?>" aria-expanded="true" aria-level="1" aria-selected="false">
-                                <div class="dx-item dx-treeview-item">
-                                  <div class="dx-template-wrapper dx-item-content dx-treeview-item-content">
-                                    <span><?php echo $category['name']; ?></span>
-                                  </div>
-                                </div>
-                                <div class="dx-treeview-toggle-item-visibility dx-treeview-toggle-item-visibility-opened"></div>
-                                <?php if (!empty($category['children'])): ?>
-                                  <ul class="dx-treeview-node-container dx-treeview-node-container-opened" role="group">
-                                    <?php foreach ($category['children'] as $child): ?>
-                                      <li class="dx-treeview-node dx-treeview-item-without-checkbox dx-treeview-node-is-leaf" data-item-id="<?php echo $child['id']; ?>" role="treeitem" aria-label="<?php echo $child['name']; ?>" aria-expanded="true" aria-level="2" aria-selected="false">
-                                        <div class="dx-item dx-treeview-item">
-                                          <div class="dx-template-wrapper dx-item-content dx-treeview-item-content">
-                                            <span class="child-1"><?php echo $child['name']; ?></span>
-                                          </div>
-                                        </div>
-                                      </li>
-                                    <?php endforeach; ?>
-                                  </ul>
-                                <?php endif; ?>
-                              </li>
-                            <?php endforeach; ?>
-                          </ul>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </dx-tree-view>
-                <dx-popup _ngcontent-c57="" height="auto" class="dx-overlay dx-popup dx-widget dx-state-invisible dx-visibility-change-handler">
-                  <div class="dx-overlay-content dx-rtl dx-popup-normal" aria-hidden="true" tabindex="0">
-                    <div class="dx-popup-content"></div>
-                  </div>
-                </dx-popup>
-              </app-category-fragment>
-              <div class="row mt-2">
-                <div class="col-6">
-                  <dx-button _ngcontent-c55="" type="success" width="100%" class="dx-button dx-button-success dx-button-mode-contained dx-widget dx-rtl dx-button-has-text" aria-label="تایید" tabindex="0" role="button">
-                    <div class="dx-button-content">
-                      <span class="dx-button-text">تایید</span>
-                    </div>
-                  </dx-button>
-                </div>
-                <div class="col-6">
-                  <dx-button _ngcontent-c55="" type="normal" width="100%" class="dx-button dx-button-normal dx-button-mode-contained dx-widget dx-rtl dx-button-has-text" aria-label="انصراف" tabindex="0" role="button">
-                    <div class="dx-button-content">
-                      <span class="dx-button-text">انصراف</span>
-                    </div>
-                  </dx-button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
+<!-- اضافه کردن لینک به فایل‌های jQuery و Select2 -->
 <script src="../assets/js/jquery-3.6.0.min.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+
+<!-- اضافه کردن لینک به فایل‌های Bootstrap -->
 <script src="../assets/js/bootstrap.min.js"></script>
 <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
 <link rel="stylesheet" href="../assets/css/style.css"> <!-- اضافه کردن لینک به فایل style.css -->
 <script src="../assets/js/main.js"></script> <!-- اضافه کردن لینک به فایل main.js -->
+
+<script>
+$(document).ready(function() {
+    $('#category').select2({
+        placeholder: 'دسته‌بندی را انتخاب کنید',
+        ajax: {
+            url: 'fetch_categories.php',
+            dataType: 'json',
+            delay: 250,
+            processResults: function (data) {
+                return {
+                    results: data.items
+                };
+            },
+            cache: true
+        },
+        minimumInputLength: 1
+    });
+});
+
+function generateAccountingCode() {
+    var category = $('#category').select2('data');
+    if (category.length === 0) {
+        alert('لطفاً ابتدا دسته‌بندی را انتخاب کنید.');
+        return;
+    }
+    var categoryName = category[0].text;
+    var accountingCodePrefix = toEnglish(categoryName.substring(0, 4));
+    $('#accountingCode').val(accountingCodePrefix + '-' + Math.floor(Math.random() * 1000000));
+}
+
+function generateProductCode() {
+    $('#productCode').val('PRD-' + Math.floor(Math.random() * 1000000));
+}
+
+function generateBarcode() {
+    $('#barcode').val('BRCD-' + Math.floor(Math.random() * 1000000));
+}
+
+function generateMainBarcode() {
+    $('#mainBarcode').val('MBRCD-' + Math.floor(Math.random() * 1000000));
+}
+
+function toggleBarcodeGeneration() {
+    if ($('#noBarcode').is(':checked')) {
+        $('#barcodeGenerationGroup').show();
+    } else {
+        $('#barcodeGenerationGroup').hide();
+    }
+}
+
+function toEnglish(text) {
+    var persianToEnglishMap = {
+        'ا': 'a', 'ب': 'b', 'پ': 'p', 'ت': 't', 'ث': 's', 'ج': 'j', 'چ': 'ch', 'ح': 'h', 'خ': 'kh',
+        'د': 'd', 'ذ': 'z', 'ر': 'r', 'ز': 'z', 'ژ': 'zh', 'س': 's', 'ش': 'sh', 'ص': 's', 'ض': 'z',
+        'ط': 't', 'ظ': 'z', 'ع': 'a', 'غ': 'gh', 'ف': 'f', 'ق': 'gh', 'ک': 'k', 'گ': 'g', 'ل': 'l',
+        'م': 'm', 'ن': 'n', 'و': 'v', 'ه': 'h', 'ی': 'y'
+    };
+    return text.split('').map(function(char) {
+        return persianToEnglishMap[char] || char;
+    }).join('');
+}
+</script>
+
 <?php
 // includes/footer.php را در اینجا قرار دهید
 include('../includes/footer.php');
