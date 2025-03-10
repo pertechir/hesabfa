@@ -1,5 +1,5 @@
 <?php
-include '../menu.php';
+include '../menu.php'; // شامل کردن فایل منو
 ?>
 <?php
 
@@ -17,14 +17,6 @@ try {
 }
 
 ?>
-
-<div id="sidebar">
-    <h1>فهرست</h1>
-    <ul>
-        <li><a href="#">صفحه اصلی</a></li>
-        <li><a href="#">افزودن محصول</a></li>
-    </ul>
-</div>
 
 <div class="main-content">
     <h2>افزودن محصول جدید</h2>
@@ -110,9 +102,8 @@ try {
                     </div>
                 </div>
             </div>
-
-            <!-- بخش تب‌ها (Tabs Section) -->
-            <div class="col-md-6">
+                        <!-- بخش تب‌ها (Tabs Section) -->
+                        <div class="col-md-6">
                 <div class="card">
                     <div class="card-body">
                         <ul class="nav nav-tabs" id="productTabs" role="tablist">
