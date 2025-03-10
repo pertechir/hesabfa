@@ -2,10 +2,10 @@
 // product/add_product.php
 
 // includes/header.php را در اینجا قرار دهید
-include('includes/header.php');
+include('../includes/header.php');
 
 // اتصال به پایگاه داده (اطلاعات اتصال را در config.php تعریف کنید)
-include('config.php');
+include('../config.php');
 try {
     $db = new PDO("mysql:host=$db_host;dbname=$db_name;charset=utf8", $db_user, $db_pass);
     $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -21,7 +21,15 @@ $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 ?>
 
-<div class="container">
+<div id="sidebar">
+    <h1>فهرست</h1>
+    <ul>
+        <li><a href="#">صفحه اصلی</a></li>
+        <li><a href="#">افزودن محصول</a></li>
+    </ul>
+</div>
+
+<div class="main-content">
     <h2>افزودن محصول جدید</h2>
     <form action="save_product.php" method="post" enctype="multipart/form-data">
         <div class="row">
@@ -32,7 +40,7 @@ $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         <!-- تصویر محصول -->
                         <div class="form-group">
                             <label>تصویر محصول:</label>
-                            <img id="productImagePreview" src="uploads/default-image/default person.png" alt="تصویر پیش‌فرض محصول" class="img-thumbnail" style="max-width: 150px; max-height: 150px;">
+                            <img id="productImagePreview" src="uploads/default-image/default person.png" alt="تصویر پیش‌فرض محصول" class="img-thumbnail" style="max-width: 150px; height: 150px;">
                             <div class="mt-2">
                                 <label for="productImage" class="btn btn-primary">انتخاب</label>
                                 <input type="file" id="productImage" name="productImage" style="display:none;" onchange="previewImage(this);">
@@ -357,5 +365,5 @@ $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 <?php
 // includes/footer.php را در اینجا قرار دهید
-include('includes/footer.php');
+include('../includes/footer.php');
 ?>

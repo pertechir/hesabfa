@@ -295,7 +295,7 @@ body {
 
 
 
-/* سایدبار */
+/* سایددبار */
 #sidebar {
     width: var(--sidebar-width);
     background-color: var(--primary-color);
@@ -457,7 +457,6 @@ body {
     margin-bottom: 1rem;
 
 }
-
 
 
 .tab-content {
