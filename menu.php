@@ -20,13 +20,13 @@ function getMenu() {
                 <li class="mb-2 menu-item">
                     <a href="#"><i class="fas fa-box-open ml-2"></i> کالاها و خدمات</a>
                     <ul class="submenu">
-                        <li><a href="/hesabfa/product/add_product.php"><i class="fas fa-plus ml-2"></i> محصول جدید</a></li>
-                        <li><a href="/hesabfa/products_services/products_list.php"><i class="fas fa-list ml-2"></i> لیست محصولات</a></li>
-                        <li><a href="/hesabfa/products_services/services_list.php"><i class="fas fa-list ml-2"></i> لیست خدمات</a></li>
-                        <li><a href="/hesabfa/products_services/update_product_prices.php"><i class="fas fa-sync ml-2"></i> به‌روزرسانی لیست قیمت محصولات</a></li>
-                        <li><a href="/hesabfa/products_services/update_service_prices.php"><i class="fas fa-sync ml-2"></i> به‌روزرسانی لیست قیمت خدمات</a></li>
-                        <li><a href="/hesabfa/products_services/print_barcode.php"><i class="fas fa-barcode ml-2"></i> چاپ بارکد</a></li>
-                        <li><a href="/hesabfa/products_services/print_barcode_multiple.php"><i class="fas fa-barcode ml-2"></i> چاپ بارکد تعدادی</a></li>
+                        <li><a href="/hesabfa/product/add_product/index.php"><i class="fas fa-plus ml-2"></i> محصول جدید</a></li>
+                        <li><a href="/hesabfa/product/list_products.php"><i class="fas fa-list ml-2"></i> لیست محصولات</a></li>
+                        <li><a href="/hesabfa/services/list_services.php"><i class="fas fa-list ml-2"></i> لیست خدمات</a></li>
+                        <li><a href="/hesabfa/product/update_price_list.php"><i class="fas fa-sync ml-2"></i> به‌روزرسانی لیست قیمت محصولات</a></li>
+                        <li><a href="/hesabfa/services/update_price_list.php"><i class="fas fa-sync ml-2"></i> به‌روزرسانی لیست قیمت خدمات</a></li>
+                        <li><a href="/hesabfa/product/print_barcode.php"><i class="fas fa-barcode ml-2"></i> چاپ بارکد</a></li>
+                        <li><a href="/hesabfa/product/print_batch_barcode.php"><i class="fas fa-barcode ml-2"></i> چاپ بارکد تعدادی</a></li>
                     </ul>
                 </li>
                 <li class="mb-2 menu-item">
