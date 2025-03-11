@@ -1,12 +1,6 @@
 <?php
 include '../menu.php'; // شامل کردن فایل منو
-?>
-<?php
-
-// includes/header.php را در اینجا قرار دهید
 include('../includes/header.php');
-
-// اتصال به پایگاه داده (اطلاعات اتصال را در config.php تعریف کنید)
 include('../config.php');
 try {
     $db = new PDO("mysql:host=$db_host;dbname=$db_name;charset=utf8", $db_user, $db_pass);
@@ -15,268 +9,263 @@ try {
     echo "اتصال به پایگاه داده با خطا مواجه شد: " . $e->getMessage();
     exit;
 }
-
 ?>
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>افزودن محصول - حسابفا</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aifd+gY1fXU9JwOQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body class="bg-gray-100">
+    <div class="flex h-screen">
+        <!-- Sidebar -->
+        <?php echo getMenu(); ?>
 
-<div class="main-content">
-    <h2>افزودن محصول جدید</h2>
-    <form action="save_product.php" method="post" enctype="multipart/form-data">
-        <div class="row">
-            <!-- بخش اصلی (Main Section) -->
-            <div class="col-md-6">
-                <div class="card">
-                    <div class="card-body">
-                        <!-- تصویر محصول -->
-                        <div class="form-group">
-                            <label>تصویر محصول:</label>
-                            <img id="productImagePreview" src="../uploads/default-image/default-person.png" alt="تصویر پیش‌فرض محصول" class="img-thumbnail" style="max-width: 150px; height: auto; display: block;">
-                            <div class="mt-2">
-                                <label for="productImage" class="btn btn-primary">انتخاب</label>
-                                <input type="file" id="productImage" name="productImage" style="display:none;" onchange="previewImage(this);">
-                                <button type="button" class="btn btn-danger" onclick="removeImage()">حذف</button>
-                                <button type="button" class="btn btn-info">دوربین</button>
+        <!-- Main Content -->
+        <div class="flex-1 p-6">
+            <h2 class="text-3xl font-bold mb-6">افزودن محصول جدید</h2>
+            <form action="save_product.php" method="post" enctype="multipart/form-data">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- بخش اصلی (Main Section) -->
+                    <div class="card bg-white p-6 shadow-md rounded-lg">
+                        <div class="card-body">
+                            <!-- تصویر محصول -->
+                            <div class="form-group mb-4">
+                                <label class="block mb-2">تصویر محصول:</label>
+                                <img id="productImagePreview" src="../uploads/default-image/default-person.png" alt="تصویر پیش‌فرض محصول" class="img-thumbnail mb-2" style="max-width: 150px; height: auto; display: block;">
+                                <div class="mt-2">
+                                    <label for="productImage" class="btn btn-primary cursor-pointer">انتخاب</label>
+                                    <input type="file" id="productImage" name="productImage" style="display:none;" onchange="previewImage(this);">
+                                    <button type="button" class="btn btn-danger" onclick="removeImage()">حذف</button>
+                                    <button type="button" class="btn btn-info">دوربین</button>
+                                </div>
+                            </div>
+
+                            <!-- کد حسابداری -->
+                            <div class="form-group mb-4">
+                                <label for="accountingCode" class="block mb-2">کد حسابداری:</label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" id="accountingCode" name="accountingCode" placeholder="کد حسابداری">
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-secondary" onclick="generateAccountingCode()">تولید کد حسابداری</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- نام کالا -->
+                            <div class="form-group mb-4">
+                                <label for="productName" class="block mb-2">نام کالا: <span class="text-red-500">*</span></label>
+                                <input type="text" class="form-control" id="productName" name="productName" placeholder="نام کالا" required>
+                            </div>
+
+                            <!-- کد کالا -->
+                            <div class="form-group mb-4">
+                                <label for="productCode" class="block mb-2">کد کالا:</label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" id="productCode" name="productCode" placeholder="کد کالا">
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-secondary" onclick="generateProductCode()">تولید کد کالا</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- بارکد -->
+                            <div class="form-group mb-4">
+                                <label for="barcode" class="block mb-2">بارکد:</label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" id="barcode" name="barcode" placeholder="بارکد (با ; جدا کنید)">
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-secondary" onclick="generateBarcode()">تولید بارکد</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- بارکد اصلی -->
+                            <div class="form-group mb-4">
+                                <label for="mainBarcode" class="block mb-2">بارکد اصلی:</label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" id="mainBarcode" name="mainBarcode" placeholder="بارکد اصلی">
+                                    <div class="input-group-append">
+                                        <input type="checkbox" id="noBarcode" name="noBarcode" onchange="toggleBarcodeGeneration()">
+                                        <label for="noBarcode" class="ml-1">محصول بارکد ندارد</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group mb-4" id="barcodeGenerationGroup" style="display:none;">
+                                <button type="button" class="btn btn-secondary" onclick="generateMainBarcode()">تولید بارکد اصلی</button>
+                            </div>
+
+                            <!-- دسته‌بندی -->
+                            <div class="form-group mb-4">
+                                <label for="category" class="block mb-2">دسته‌بندی:</label>
+                                <select id="category" name="category" class="form-control"></select>
                             </div>
                         </div>
+                    </div>
 
-                        <!-- کد حسابداری -->
-                        <div class="form-group">
-                            <label for="accountingCode">کد حسابداری:</label>
-                            <div class="input-group">
-                                <input type="text" class="form-control" id="accountingCode" name="accountingCode" placeholder="کد حسابداری">
-                                <div class="input-group-append">
-                                    <button type="button" class="btn btn-secondary" onclick="generateAccountingCode()">تولید کد حسابداری</button>
+                    <!-- بخش تب‌ها (Tabs Section) -->
+                    <div class="card bg-white p-6 shadow-md rounded-lg">
+                        <div class="card-body">
+                            <ul class="nav nav-tabs mb-4" id="productTabs" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link active" id="sales-tab" data-toggle="tab" href="#sales" role="tab" aria-controls="sales" aria-selected="true">فروش</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="general-tab" data-toggle="tab" href="#general" role="tab" aria-controls="general" aria-selected="false">عمومی</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="inventory-tab" data-toggle="tab" href="#inventory" role="tab" aria-controls="inventory" aria-selected="false">موجودی کالا</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="tax-tab" data-toggle="tab" href="#tax" role="tab" aria-controls="tax" aria-selected="false">مالیات</a>
+                                </li>
+                            </ul>
+                            <div class="tab-content" id="productTabsContent">
+                                <!-- تب فروش (Sales Tab) -->
+                                <div class="tab-pane fade show active" id="sales" role="tabpanel" aria-labelledby="sales-tab">
+                                    <div class="form-group mb-4">
+                                        <label for="salePrice" class="block mb-2">قیمت فروش:</label>
+                                        <input type="number" class="form-control" id="salePrice" name="salePrice" placeholder="قیمت فروش">
+                                    </div>
+                                    <div class="form-group mb-4">
+                                        <label for="saleDescription" class="block mb-2">توضیحات فروش:</label>
+                                        <textarea class="form-control" id="saleDescription" name="saleDescription" placeholder="توضیحات فروش"></textarea>
+                                    </div>
+                                    <div class="form-group mb-4">
+                                        <label for="purchasePrice" class="block mb-2">قیمت خرید:</label>
+                                        <input type="number" class="form-control" id="purchasePrice" name="purchasePrice" placeholder="قیمت خرید">
+                                    </div>
+                                    <div class="form-group mb-4">
+                                        <label for="purchaseDescription" class="block mb-2">توضیحات خرید:</label>
+                                        <textarea class="form-control" id="purchaseDescription" name="purchaseDescription" placeholder="توضیحات خرید"></textarea>
+                                    </div>
+                                    <button type="button" class="btn btn-info" id="showPriceList">لیست قیمت</button>
+                                </div>
+
+                                <!-- تب عمومی (General Tab) -->
+                                <div class="tab-pane fade" id="general" role="tabpanel" aria-labelledby="general-tab">
+                                    <div class="form-group mb-4">
+                                        <label for="mainUnit" class="block mb-2">واحد اصلی:</label>
+                                        <select class="form-control" id="mainUnit" name="mainUnit">
+                                            <option value="number">عدد</option>
+                                            <option value="kilogram">کیلوگرم</option>
+                                            <option value="meter">متر</option>
+                                            <!-- سایر واحدها -->
+                                        </select>
+                                    </div>
+                                    <div class="form-check mb-4">
+                                        <input type="checkbox" class="form-check-input" id="hasMultipleUnits" name="hasMultipleUnits">
+                                        <label class="form-check-label" for="hasMultipleUnits">کالا بیش از یک واحد دارد؟</label>
+                                    </div>
+                                    <div class="form-group mb-4">
+                                        <label for="generalDescription" class="block mb-2">توضیحات:</label>
+                                        <textarea class="form-control" id="generalDescription" name="generalDescription" placeholder="توضیحات کلی درباره محصول"></textarea>
+                                    </div>
+                                </div>
+
+                                <!-- تب موجودی کالا (Inventory Tab) -->
+                                <div class="tab-pane fade" id="inventory" role="tabpanel" aria-labelledby="inventory-tab">
+                                    <div class="form-check mb-4">
+                                        <input type="checkbox" class="form-check-input" id="controlInventory" name="controlInventory">
+                                        <label class="form-check-label" for="controlInventory">کنترل موجودی</label>
+                                    </div>
+                                    <div class="form-group mb-4">
+                                        <label for="reorderPoint" class="block mb-2">نقطه سفارش:</label>
+                                        <input type="number" class="form-control" id="reorderPoint" name="reorderPoint" placeholder="حداقل تعداد موجودی">
+                                    </div>
+                                    <div class="form-group mb-4">
+                                        <label for="minimumOrder" class="block mb-2">حداقل سفارش:</label>
+                                        <input type="number" class="form-control" id="minimumOrder" name="minimumOrder" placeholder="حداقل تعداد محصول در هر سفارش">
+                                    </div>
+                                    <div class="form-group mb-4">
+                                        <label for="leadTime" class="block mb-2">زمان انتظار:</label>
+                                        <input type="number" class="form-control" id="leadTime" name="leadTime" placeholder="مدت زمان انتظار برای رسیدن محصول به انبار">
+                                    </div>
+                                </div>
+
+                                <!-- تب مالیات (Tax Tab) -->
+                                <div class="tab-pane fade" id="tax" role="tabpanel" aria-labelledby="tax-tab">
+                                    <div class="form-group mb-4">
+                                        <label for="taxRate" class="block mb-2">نرخ مالیات:</label>
+                                        <input type="number" class="form-control" id="taxRate" name="taxRate" placeholder="نرخ مالیات">
+                                    </div>
+                                    <div class="form-group mb-4">
+                                        <label for="taxDescription" class="block mb-2">توضیحات مالیات:</label>
+                                        <textarea class="form-control" id="taxDescription" name="taxDescription" placeholder="توضیحات مربوط به مالیات"></textarea>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-
-                        <!-- نام کالا -->
-                        <div class="form-group">
-                            <label for="productName">نام کالا: <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" id="productName" name="productName" placeholder="نام کالا" required>
-                        </div>
-
-                        <!-- کد کالا -->
-                        <div class="form-group">
-                            <label for="productCode">کد کالا:</label>
-                            <div class="input-group">
-                                <input type="text" class="form-control" id="productCode" name="productCode" placeholder="کد کالا">
-                                <div class="input-group-append">
-                                    <button type="button" class="btn btn-secondary" onclick="generateProductCode()">تولید کد کالا</button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- بارکد -->
-                        <div class="form-group">
-                            <label for="barcode">بارکد:</label>
-                            <div class="input-group">
-                                <input type="text" class="form-control" id="barcode" name="barcode" placeholder="بارکد (با ; جدا کنید)">
-                                <div class="input-group-append">
-                                    <button type="button" class="btn btn-secondary" onclick="generateBarcode()">تولید بارکد</button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- بارکد اصلی -->
-                        <div class="form-group">
-                            <label for="mainBarcode">بارکد اصلی:</label>
-                            <div class="input-group">
-                                <input type="text" class="form-control" id="mainBarcode" name="mainBarcode" placeholder="بارکد اصلی">
-                                <div class="input-group-append">
-                                    <input type="checkbox" id="noBarcode" name="noBarcode" onchange="toggleBarcodeGeneration()">
-                                    <label for="noBarcode" class="ml-1">محصول بارکد ندارد</label>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-group" id="barcodeGenerationGroup" style="display:none;">
-                            <button type="button" class="btn btn-secondary" onclick="generateMainBarcode()">تولید بارکد اصلی</button>
-                        </div>
-
-                        <!-- دسته‌بندی -->
-                        <div class="form-group">
-                            <label for="category">دسته‌بندی:</label>
-                            <select id="category" name="category" class="form-control"></select>
-                        </div>
-
                     </div>
                 </div>
-            </div>
-                        <!-- بخش تب‌ها (Tabs Section) -->
-                        <div class="col-md-6">
-                <div class="card">
-                    <div class="card-body">
-                        <ul class="nav nav-tabs" id="productTabs" role="tablist">
-                            <li class="nav-item">
-                                <a class="nav-link active" id="sales-tab" data-toggle="tab" href="#sales" role="tab" aria-controls="sales" aria-selected="true">فروش</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" id="general-tab" data-toggle="tab" href="#general" role="tab" aria-controls="general" aria-selected="false">عمومی</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" id="inventory-tab" data-toggle="tab" href="#inventory" role="tab" aria-controls="inventory" aria-selected="false">موجودی کالا</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" id="tax-tab" data-toggle="tab" href="#tax" role="tab" aria-controls="tax" aria-selected="false">مالیات</a>
-                            </li>
-                        </ul>
-                        <div class="tab-content mt-3" id="productTabsContent">
-                            <!-- تب فروش (Sales Tab) -->
-                            <div class="tab-pane fade show active" id="sales" role="tabpanel" aria-labelledby="sales-tab">
-                                <div class="form-group">
-                                    <label for="salePrice">قیمت فروش:</label>
-                                    <input type="number" class="form-control" id="salePrice" name="salePrice" placeholder="قیمت فروش">
-                                </div>
-                                <div class="form-group">
-                                    <label for="saleDescription">توضیحات فروش:</label>
-                                    <textarea class="form-control" id="saleDescription" name="saleDescription" placeholder="توضیحات فروش"></textarea>
-                                </div>
-                                <div class="form-group">
-                                    <label for="purchasePrice">قیمت خرید:</label>
-                                    <input type="number" class="form-control" id="purchasePrice" name="purchasePrice" placeholder="قیمت خرید">
-                                </div>
-                                <div class="form-group">
-                                    <label for="purchaseDescription">توضیحات خرید:</label>
-                                    <textarea class="form-control" id="purchaseDescription" name="purchaseDescription" placeholder="توضیحات خرید"></textarea>
-                                </div>
-                            </div>
+                <button type="submit" class="btn btn-success mt-6">ذخیره</button>
+            </form>
+        </div>
+    </div>
 
-                            <!-- تب عمومی (General Tab) -->
-                            <div class="tab-pane fade" id="general" role="tabpanel" aria-labelledby="general-tab">
-                                <div class="form-group">
-                                    <label for="mainUnit">واحد اصلی:</label>
-                                    <select class="form-control" id="mainUnit" name="mainUnit">
-                                        <option value="number">عدد</option>
-                                        <option value="kilogram">کیلوگرم</option>
-                                        <option value="meter">متر</option>
-                                        <!-- سایر واحدها -->
-                                    </select>
-                                </div>
-                                <div class="form-check">
-                                    <input type="checkbox" class="form-check-input" id="hasMultipleUnits" name="hasMultipleUnits">
-                                    <label class="form-check-label" for="hasMultipleUnits">کالا بیش از یک واحد دارد؟</label>
-                                </div>
-                                <div class="form-group">
-                                    <label for="generalDescription">توضیحات:</label>
-                                    <textarea class="form-control" id="generalDescription" name="generalDescription" placeholder="توضیحات کلی درباره محصول"></textarea>
-                                </div>
-                            </div>
-
-                            <!-- تب موجودی کالا (Inventory Tab) -->
-                            <div class="tab-pane fade" id="inventory" role="tabpanel" aria-labelledby="inventory-tab">
-                                <div class="form-check">
-                                    <input type="checkbox" class="form-check-input" id="controlInventory" name="controlInventory">
-                                    <label class="form-check-label" for="controlInventory">کنترل موجودی</label>
-                                </div>
-                                <div class="form-group">
-                                    <label for="reorderPoint">نقطه سفارش:</label>
-                                    <input type="number" class="form-control" id="reorderPoint" name="reorderPoint" placeholder="حداقل تعداد موجودی">
-                                </div>
-                                <div class="form-group">
-                                    <label for="minimumOrder">حداقل سفارش:</label>
-                                    <input type="number" class="form-control" id="minimumOrder" name="minimumOrder" placeholder="حداقل تعداد محصول در هر سفارش">
-                                </div>
-                                <div class="form-group">
-                                    <label for="leadTime">زمان انتظار:</label>
-                                    <input type="number" class="form-control" id="leadTime" name="leadTime" placeholder="مدت زمان انتظار برای رسیدن محصول به انبار">
-                                </div>
-                            </div>
-
-                            <!-- تب مالیات (Tax Tab) -->
-                            <div class="tab-pane fade" id="tax" role="tabpanel" aria-labelledby="tax-tab">
-                                <div class="form-group">
-                                    <label for="taxRate">نرخ مالیات:</label>
-                                    <input type="number" class="form-control" id="taxRate" name="taxRate" placeholder="نرخ مالیات">
-                                </div>
-                                <div class="form-group">
-                                    <label for="taxDescription">توضیحات مالیات:</label>
-                                    <textarea class="form-control" id="taxDescription" name="taxDescription" placeholder="توضیحات مربوط به مالیات"></textarea>
-                                </div>
-                            </div>
-                        </div>
+    <!-- پاپ‌آپ لیست قیمت -->
+    <div id="priceListModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="priceListModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="priceListModalLabel">لیست قیمت</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <!-- محتوای لیست قیمت -->
+                    <div class="form-group mb-4">
+                        <input type="checkbox" class="form-check-input" id="priceSaleActive" name="priceSaleActive">
+                        <label for="priceSaleActive" class="block mb-2">قیمت فروش (IRR):</label>
+                        <input type="number" class="form-control" id="priceSale" placeholder="ریال 0">
                     </div>
+                    <div class="form-group mb-4">
+                        <input type="checkbox" class="form-check-input" id="pricePartnerActive" name="pricePartnerActive">
+                        <label for="pricePartnerActive" class="block mb-2">همکار (IRR):</label>
+                        <input type="number" class="form-control" id="pricePartner" placeholder="ریال 0">
+                    </div>
+                    <div class="form-group mb-4">
+                        <input type="checkbox" class="form-check-input" id="priceWholesaleActive" name="priceWholesaleActive">
+                        <label for="priceWholesaleActive" class="block mb-2">عمده (IRR):</label>
+                        <input type="number" class="form-control" id="priceWholesale" placeholder="ریال 0">
+                    </div>
+                    <div class="form-group mb-4">
+                        <input type="checkbox" class="form-check-input" id="priceDollarActive" name="priceDollarActive">
+                        <label for="priceDollarActive" class="block mb-2">دلاری (USD):</label>
+                        <input type="number" class="form-control" id="priceDollar" placeholder="$ 0.00">
+                    </div>
+                    <div class="form-group mb-4">
+                        <input type="checkbox" class="form-check-input" id="priceStaffActive" name="priceStaffActive">
+                        <label for="priceStaffActive" class="block mb-2">پرسنل (IRR):</label>
+                        <input type="number" class="form-control" id="priceStaff" placeholder="ریال 0">
+                    </div>
+                    <div class="form-group mb-4">
+                        <input type="checkbox" class="form-check-input" id="priceShopActive" name="priceShopActive">
+                        <label for="priceShopActive" class="block mb-2">مغازه (IRR):</label>
+                        <input type="number" class="form-control" id="priceShop" placeholder="ریال 0">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">بستن</button>
+                    <button type="button" class="btn btn-primary">ذخیره تغییرات</button>
                 </div>
             </div>
         </div>
-        <button type="submit" class="btn btn-success">ذخیره</button>
-    </form>
-</div>
+    </div>
 
-<!-- اضافه کردن لینک به فایل‌های jQuery و Select2 -->
-<script src="../assets/js/jquery-3.6.0.min.js"></script>
-<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
-<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
-
-<!-- اضافه کردن لینک به فایل‌های Bootstrap -->
-<script src="../assets/js/bootstrap.min.js"></script>
-<link rel="stylesheet" href="../assets/css/bootstrap.min.css">
-<link rel="stylesheet" href="../assets/css/style.css"> <!-- اضافه کردن لینک به فایل style.css -->
-<script src="../assets/js/main.js"></script> <!-- اضافه کردن لینک به فایل main.js -->
-
-<script>
-$(document).ready(function() {
-    $('#category').select2({
-        placeholder: 'دسته‌بندی را انتخاب کنید',
-        ajax: {
-            url: 'fetch_categories.php',
-            dataType: 'json',
-            delay: 250,
-            processResults: function (data) {
-                return {
-                    results: data.items
-                };
-            },
-            cache: true
-        },
-        minimumInputLength: 1
-    });
-});
-
-function generateAccountingCode() {
-    var category = $('#category').select2('data');
-    if (category.length === 0) {
-        alert('لطفاً ابتدا دسته‌بندی را انتخاب کنید.');
-        return;
-    }
-    var categoryName = category[0].text;
-    var accountingCodePrefix = toEnglish(categoryName.substring(0, 4));
-    $('#accountingCode').val(accountingCodePrefix + '-' + Math.floor(Math.random() * 1000000));
-}
-
-function generateProductCode() {
-    $('#productCode').val('PRD-' + Math.floor(Math.random() * 1000000));
-}
-
-function generateBarcode() {
-    $('#barcode').val('BRCD-' + Math.floor(Math.random() * 1000000));
-}
-
-function generateMainBarcode() {
-    $('#mainBarcode').val('MBRCD-' + Math.floor(Math.random() * 1000000));
-}
-
-function toggleBarcodeGeneration() {
-    if ($('#noBarcode').is(':checked')) {
-        $('#barcodeGenerationGroup').show();
-    } else {
-        $('#barcodeGenerationGroup').hide();
-    }
-}
-
-function toEnglish(text) {
-    var persianToEnglishMap = {
-        'ا': 'a', 'ب': 'b', 'پ': 'p', 'ت': 't', 'ث': 's', 'ج': 'j', 'چ': 'ch', 'ح': 'h', 'خ': 'kh',
-        'د': 'd', 'ذ': 'z', 'ر': 'r', 'ز': 'z', 'ژ': 'zh', 'س': 's', 'ش': 'sh', 'ص': 's', 'ض': 'z',
-        'ط': 't', 'ظ': 'z', 'ع': 'a', 'غ': 'gh', 'ف': 'f', 'ق': 'gh', 'ک': 'k', 'گ': 'g', 'ل': 'l',
-        'م': 'm', 'ن': 'n', 'و': 'v', 'ه': 'h', 'ی': 'y'
-    };
-    return text.split('').map(function(char) {
-        return persianToEnglishMap[char] || char;
-    }).join('');
-}
-</script>
-
-<?php
-// includes/footer.php را در اینجا قرار دهید
-include('../includes/footer.php');
-?>
+    <script src="../assets/js/jquery-3.6.0.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+    <script src="../assets/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <script src="../assets/js/main.js"></script>
+    <?php include('../includes/footer.php'); ?>
+</body>
+</html>

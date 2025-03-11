@@ -292,3 +292,112 @@ function saveCategory() {
 
 // فراخوانی تابع
 setupCategorySelector();
+
+$(document).ready(function() {
+    // تنظیمات select2 برای دسته‌بندی
+    $('#category').select2({
+        placeholder: 'دسته‌بندی را انتخاب کنید',
+        ajax: {
+            url: 'fetch_categories.php',
+            dataType: 'json',
+            delay: 250,
+            processResults: function (data) {
+                return {
+                    results: data.items
+                };
+            },
+            cache: true
+        },
+        minimumInputLength: 1
+    });
+
+    // مدیریت باز و بسته شدن زیرمنوها
+    const menuItems = document.querySelectorAll('#sidebar li.menu-item');
+    menuItems.forEach(item => {
+        const link = item.querySelector('a');
+        const submenu = item.querySelector('.submenu');
+        if (submenu) {
+            link.addEventListener('click', function(e) {
+                e.preventDefault(); // جلوگیری از عملکرد پیش‌فرض لینک
+                menuItems.forEach(i => {
+                    if (i !== item) {
+                        i.classList.remove('active');
+                        const sub = i.querySelector('.submenu');
+                        if (sub) {
+                            sub.style.display = 'none';
+                        }
+                    }
+                });
+                item.classList.toggle('active');
+                submenu.style.display = submenu.style.display === 'block' ? 'none' : 'block';
+            });
+        }
+    });
+
+    // تنظیم آیتم های فعال در منو
+    var currentPage = window.location.pathname;
+    var menuLinks = document.querySelectorAll("#sidebar a");
+    menuLinks.forEach(link => {
+        var linkPath = link.getAttribute('href');
+        if (linkPath === currentPage) {
+            link.classList.add('active-menu');
+            const parentMenuItem = link.closest('.menu-item');
+            if (parentMenuItem) {
+                parentMenuItem.classList.add('active');
+                const parentSubmenu = link.closest('.submenu');
+                if (parentSubmenu) {
+                    parentSubmenu.style.display = 'block';
+                    link.classList.add('active-submenu');
+                }
+            }
+        }
+    });
+
+    // نمایش پاپ‌آپ لیست قیمت
+    $('#showPriceList').on('click', function() {
+        $('#priceListModal').modal('show');
+    });
+});
+
+function generateAccountingCode() {
+    var category = $('#category').select2('data');
+    if (category.length === 0) {
+        alert('لطفاً ابتدا دسته‌بندی را انتخاب کنید.');
+        return;
+    }
+    var categoryName = category[0].text;
+    var accountingCodePrefix = toEnglish(categoryName.substring(0, 4));
+    $('#accountingCode').val(accountingCodePrefix + '-' + Math.floor(Math.random() * 1000000));
+}
+
+function generateProductCode() {
+    $('#productCode').val('PRD-' + Math.floor(Math.random() * 1000000));
+}
+
+function generateBarcode() {
+    $('#barcode').val('BRCD-' + Math.floor(Math.random() * 1000000));
+}
+
+function generateMainBarcode() {
+    $('#mainBarcode').val('MBRCD-' + Math.floor(Math.random() * 1000000));
+}
+
+function toggleBarcodeGeneration() {
+    if ($('#noBarcode').is(':checked')) {
+        $('#barcodeGenerationGroup').show();
+    } else {
+        $('#barcodeGenerationGroup').hide();
+    }
+}
+
+function toEnglish(text) {
+    var persianToEnglishMap = {
+        'ا': 'a', 'ب': 'b', 'پ': 'p', 'ت': 't', 'ث': 's', 'ج': 'j', 'چ': 'ch', 'ح': 'h', 'خ': 'kh',
+        'د': 'd', 'ذ': 'z', 'ر': 'r', 'ز': 'z', 'ژ': 'zh', 'س': 's', 'ش': 'sh', 'ص': 's', 'ض': 'z',
+        'ط': 't', 'ظ': 'z', 'ع': 'a', 'غ': 'gh', 'ف': 'f', 'ق': 'gh', 'ک': 'k', 'گ': 'g', 'ل': 'l',
+        'م': 'm', 'ن': 'n', 'و': 'v', 'ه': 'h', 'ی': 'y'
+    };
+    return text.split('').map(function(char) {
+        return persianToEnglishMap[char] || char;
+    }).join('');
+}

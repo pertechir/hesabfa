@@ -7,17 +7,17 @@ function getMenu() {
         </div>
         <nav>
             <ul class="p-4">
-                <li class="mb-2">
+                <li class="mb-2 menu-item">
                     <a href="/hesabfa/dashboard/index.php"><i class="fas fa-tachometer-alt ml-2"></i> داشبورد</a>
                 </li>
-                <li class="mb-2">
+                <li class="mb-2 menu-item">
                     <a href="#"><i class="fas fa-users ml-2"></i> اشخاص</a>
                     <ul class="submenu">
                         <li><a href="/hesabfa/person/add_person.php"><i class="fas fa-plus ml-2"></i> شخص جدید</a></li>
                         <li><a href="/hesabfa/person/person.php"><i class="fas fa-list ml-2"></i> اشخاص</a></li>
                     </ul>
                 </li>
-                <li class="mb-2">
+                <li class="mb-2 menu-item">
                     <a href="#"><i class="fas fa-box-open ml-2"></i> کالاها و خدمات</a>
                     <ul class="submenu">
                         <li><a href="/hesabfa/product/add_product.php"><i class="fas fa-plus ml-2"></i> محصول جدید</a></li>
@@ -29,7 +29,7 @@ function getMenu() {
                         <li><a href="/hesabfa/products_services/print_barcode_multiple.php"><i class="fas fa-barcode ml-2"></i> چاپ بارکد تعدادی</a></li>
                     </ul>
                 </li>
-                <li class="mb-2">
+                <li class="mb-2 menu-item">
                     <a href="#"><i class="fas fa-university ml-2"></i> بانکداری</a>
                     <ul class="submenu">
                         <li><a href="/hesabfa/banking/banks.php"><i class="fas fa-piggy-bank ml-2"></i> بانک‌ها</a></li>
@@ -41,7 +41,7 @@ function getMenu() {
                         <li><a href="/hesabfa/banking/paid_checks.php"><i class="fas fa-check ml-2"></i> لیست چک‌های پرداختی</a></li>
                     </ul>
                 </li>
-                <li class="mb-2">
+                <li class="mb-2 menu-item">
                     <a href="#"><i class="fas fa-money-bill ml-2"></i> فروش و درآمد</a>
                     <ul class="submenu">
                         <li><a href="/hesabfa/sales_income/add_sale.php"><i class="fas fa-plus ml-2"></i> فروش جدید</a></li>
@@ -56,7 +56,7 @@ function getMenu() {
                         <li><a href="/hesabfa/sales_income/discounted_items.php"><i class="fas fa-percent ml-2"></i> اقلام تخفیف‌دار</a></li>
                     </ul>
                 </li>
-                <li class="mb-2">
+                <li class="mb-2 menu-item">
                     <a href="#"><i class="fas fa-shopping-cart ml-2"></i> خرید و هزینه</a>
                     <ul class="submenu">
                         <li><a href="/hesabfa/purchase_expense/add_purchase.php"><i class="fas fa-plus ml-2"></i> خرید جدید</a></li>
@@ -69,7 +69,7 @@ function getMenu() {
                         <li><a href="/hesabfa/purchase_expense/waste_list.php"><i class="fas fa-list ml-2"></i> لیست ضایعات</a></li>
                     </ul>
                 </li>
-                <li class="mb-2">
+                <li class="mb-2 menu-item">
                     <a href="#"><i class="fas fa-warehouse ml-2"></i> انبارداری</a>
                     <ul class="submenu">
                         <li><a href="/hesabfa/warehouse/warehouses.php"><i class="fas fa-boxes ml-2"></i> انبارها</a></li>
@@ -80,7 +80,7 @@ function getMenu() {
                         <li><a href="/hesabfa/warehouse/stocktaking.php"><i class="fas fa-clipboard-check ml-2"></i> انبارگردانی</a></li>
                     </ul>
                 </li>
-                <li class="mb-2">
+                <li class="mb-2 menu-item">
                     <a href="#"><i class="fas fa-calculator ml-2"></i> حسابداری</a>
                     <ul class="submenu">
                         <li><a href="/hesabfa/accounting/add_document.php"><i class="fas fa-plus ml-2"></i> سند جدید</a></li>
@@ -91,7 +91,7 @@ function getMenu() {
                         <li><a href="/hesabfa/accounting/consolidate_documents.php"><i class="fas fa-compress-arrows-alt ml-2"></i> تجمیع اسناد</a></li>
                     </ul>
                 </li>
-                <li class="mb-2">
+                <li class="mb-2 menu-item">
                     <a href="#"><i class="fas fa-ellipsis-h ml-2"></i> سایر</a>
                     <ul class="submenu">
                         <li><a href="/hesabfa/other/archive.php"><i class="fas fa-archive ml-2"></i> آرشیو</a></li>
@@ -107,10 +107,10 @@ function getMenu() {
                         <li><a href="/hesabfa/other/salary_document.php"><i class="fas fa-money-bill-wave ml-2"></i> سند حقوق</a></li>
                     </ul>
                 </li>
-                <li class="mb-2">
+                <li class="mb-2 menu-item">
                     <a href="/hesabfa/reports/index.php"><i class="fas fa-chart-bar ml-2"></i> گزارش‌ها</a>
                 </li>
-                <li class="mb-2">
+                <li class="mb-2 menu-item">
                     <a href="/hesabfa/settings/index.php"><i class="fas fa-cog ml-2"></i> تنظیمات</a>
                 </li>
             </ul>
