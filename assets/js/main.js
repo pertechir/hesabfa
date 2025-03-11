@@ -401,3 +401,37 @@ function toEnglish(text) {
         return persianToEnglishMap[char] || char;
     }).join('');
 }
+
+$(document).ready(function() {
+    $('#category').select2({
+        ajax: {
+            url: '/hesabfa/product/add_product/fetch_categories.php',
+            dataType: 'json',
+            delay: 250,
+            data: function(params) {
+                return {
+                    term: params.term // متن جستجو
+                };
+            },
+            processResults: function(data) {
+                return {
+                    results: data.items
+                };
+            },
+            cache: true
+        },
+        placeholder: 'یک دسته‌بندی انتخاب کنید',
+        minimumInputLength: 1,
+        language: {
+            inputTooShort: function() {
+                return 'لطفاً یک حرف یا بیشتر وارد کنید';
+            },
+            searching: function() {
+                return 'در حال جستجو...';
+            },
+            noResults: function() {
+                return 'نتیجه‌ای یافت نشد';
+            }
+        }
+    });
+});
