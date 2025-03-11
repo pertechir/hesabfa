@@ -1,15 +1,3 @@
-<?php
-include '../../menu.php'; // شامل کردن فایل منو
-include('../../includes/header.php');
-include('../../config.php');
-try {
-    $db = new PDO("mysql:host=$db_host;dbname=$db_name;charset=utf8", $db_user, $db_pass);
-    $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-} catch (PDOException $e) {
-    echo "اتصال به پایگاه داده با خطا مواجه شد: " . $e->getMessage();
-    exit;
-}
-?>
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
@@ -23,12 +11,12 @@ try {
 <body class="bg-gray-100">
     <div class="flex h-screen">
         <!-- Sidebar -->
-        <?php echo getMenu(); ?>
+        <?php include '../../menu.php'; ?>
 
         <!-- Main Content -->
         <div class="flex-1 p-6">
             <h2 class="text-3xl font-bold mb-6">افزودن محصول جدید</h2>
-            <form action="save_product.php" method="post" enctype="multipart/form-data">
+            <form id="productForm" action="save_product.php" method="post" enctype="multipart/form-data">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <!-- بخش اصلی (Main Section) -->
                     <?php include 'main_section.php'; ?>
@@ -71,52 +59,21 @@ try {
         </div>
     </div>
 
-    <!-- پاپ‌آپ لیست قیمت -->
-    <div id="priceListModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="priceListModalLabel" aria-hidden="true">
+    <!-- پاپ‌آپ موفقیت -->
+    <div id="successModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="successModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="priceListModalLabel">لیست قیمت</h5>
+                    <h5 class="modal-title" id="successModalLabel">موفقیت</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    <!-- محتوای لیست قیمت -->
-                    <div class="form-group mb-4">
-                        <input type="checkbox" class="form-check-input" id="priceSaleActive" name="priceSaleActive">
-                        <label for="priceSaleActive" class="block mb-2">قیمت فروش (IRR):</label>
-                        <input type="number" class="form-control" id="priceSale" placeholder="ریال 0">
-                    </div>
-                    <div class="form-group mb-4">
-                        <input type="checkbox" class="form-check-input" id="pricePartnerActive" name="pricePartnerActive">
-                        <label for="pricePartnerActive" class="block mb-2">همکار (IRR):</label>
-                        <input type="number" class="form-control" id="pricePartner" placeholder="ریال 0">
-                    </div>
-                    <div class="form-group mb-4">
-                        <input type="checkbox" class="form-check-input" id="priceWholesaleActive" name="priceWholesaleActive">
-                        <label for="priceWholesaleActive" class="block mb-2">عمده (IRR):</label>
-                        <input type="number" class="form-control" id="priceWholesale" placeholder="ریال 0">
-                    </div>
-                    <div class="form-group mb-4">
-                        <input type="checkbox" class="form-check-input" id="priceDollarActive" name="priceDollarActive">
-                        <label for="priceDollarActive" class="block mb-2">دلاری (USD):</label>
-                        <input type="number" class="form-control" id="priceDollar" placeholder="$ 0.00">
-                    </div>
-                    <div class="form-group mb-4">
-                        <input type="checkbox" class="form-check-input" id="priceStaffActive" name="priceStaffActive">
-                        <label for="priceStaffActive" class="block mb-2">پرسنل (IRR):</label>
-                        <input type="number" class="form-control" id="priceStaff" placeholder="ریال 0">
-                    </div>
-                    <div class="form-group mb-4">
-                        <input type="checkbox" class="form-check-input" id="priceShopActive" name="priceShopActive">
-                        <label for="priceShopActive" class="block mb-2">مغازه (IRR):</label>
-                        <input type="number" class="form-control" id="priceShop" placeholder="ریال 0">
-                    </div>
+                    محصول با موفقیت ذخیره شد.
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">بستن</button>
-                    <button type="button" class="btn btn-primary">ذخیره تغییرات</button>
                 </div>
             </div>
         </div>
@@ -129,6 +86,31 @@ try {
     <link rel="stylesheet" href="/hesabfa/assets/css/bootstrap.min.css">
     <link rel="stylesheet" href="/hesabfa/assets/css/style.css">
     <script src="/hesabfa/assets/js/main.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            $('#productForm').on('submit', function(e) {
+                e.preventDefault();
+
+                $.ajax({
+                    type: 'POST',
+                    url: 'save_product.php',
+                    data: $(this).serialize(),
+                    success: function(response) {
+                        if (response.success) {
+                            $('#successModal').modal('show');
+                            $('#productForm')[0].reset();
+                        } else {
+                            alert(response.message);
+                        }
+                    },
+                    error: function() {
+                        alert('خطایی در ارسال درخواست رخ داده است.');
+                    }
+                });
+            });
+        });
+    </script>
     <?php include('../../includes/footer.php'); ?>
 </body>
 </html>

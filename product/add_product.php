@@ -36,8 +36,7 @@ try {
                             <!-- تصویر محصول -->
                             <div class="form-group mb-4">
                                 <label class="block mb-2">تصویر محصول:</label>
-                                <img id="productImagePreview" src="../uploads/default-image/default-person.png" alt="تصویر پیش‌فرض محصول" class="img-thumbnail mb-2" style="max-width: 150px; height: auto; display: block;">
-                                <div class="mt-2">
+                                <img id="productImagePreview" src="/hesabfa/uploads/default-image/default-person.png" alt="تصویر پیش‌فرض محصول" class="img-thumbnail mb-2" style="max-width: 150px; height: auto; display: block;">                                <div class="mt-2">
                                     <label for="productImage" class="btn btn-primary cursor-pointer">انتخاب</label>
                                     <input type="file" id="productImage" name="productImage" style="display:none;" onchange="previewImage(this);">
                                     <button type="button" class="btn btn-danger" onclick="removeImage()">حذف</button>

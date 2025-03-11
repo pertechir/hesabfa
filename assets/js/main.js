@@ -402,7 +402,18 @@ function toEnglish(text) {
     }).join('');
 }
 
+
 $(document).ready(function() {
+    // تنظیمات تغییر وضعیت فیلدهای واحد فرعی
+    $('#hasMultipleUnits').change(function() {
+        if (this.checked) {
+            $('#multipleUnitsFields').show();
+        } else {
+            $('#multipleUnitsFields').hide();
+        }
+    });
+
+    // تنظیمات select2 برای دسته‌بندی
     $('#category').select2({
         ajax: {
             url: '/hesabfa/product/add_product/fetch_categories.php',
