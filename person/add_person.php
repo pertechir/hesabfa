@@ -92,6 +92,7 @@ include '../index.php';
                     <label for="file-input">
                         <div class="image-preview">
                             <img id="imagePreview" src="uploads/default-image/default-person.png" alt="تصویر شخص" />
+                            
                         </div>
                     </label>
                     <div class="image-edit">

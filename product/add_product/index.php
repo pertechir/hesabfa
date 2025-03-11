@@ -18,7 +18,7 @@ try {
     <title>افزودن محصول - حسابفا</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="../../assets/css/style.css">
+    <link rel="stylesheet" href="<?php echo BASE_URL; ?>/assets/css/style.css">
 </head>
 <body class="bg-gray-100">
     <div class="flex h-screen">
@@ -122,13 +122,14 @@ try {
         </div>
     </div>
 
-    <script src="../../assets/js/jquery-3.6.0.min.js"></script>
+    <script src="/hesabfa/assets/js/jquery-3.6.0.min.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
-    <script src="../../assets/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" href="../../assets/css/bootstrap.min.css">
-    <link rel="stylesheet" href="../../assets/css/style.css">
-    <script src="../../assets/js/main.js"></script>
+    <script src="/hesabfa/assets/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="/hesabfa/assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="<?php echo BASE_URL; ?>/assets/css/style.css">
+    <script src="/hesabfa/assets/js/main.js"></script>
     <?php include('../../includes/footer.php'); ?>
 </body>
 </html>
+
