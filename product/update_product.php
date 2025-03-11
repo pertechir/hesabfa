@@ -1,25 +1,60 @@
 <?php
-// اتصال به پایگاه داده
-$db = new PDO('mysql:host=localhost;dbname=hesabfa', 'root', '');
-
-// دریافت اطلاعات از فرم
-$id = $_POST['id'];
-$name = $_POST['name'];
-$price = $_POST['price'];
-$description = $_POST['description'];
-
-// بروزرسانی اطلاعات در جدول products
-$query = "UPDATE products SET name = :name, price = :price, description = :description WHERE id = :id";
-$stmt = $db->prepare($query);
-$stmt->bindParam(':id', $id);
-$stmt->bindParam(':name', $name);
-$stmt->bindParam(':price', $price);
-$stmt->bindParam(':description', $description);
-
-if ($stmt->execute()) {
-    header("Location: product_list.php");
-    exit();
-} else {
-    echo "متاسفانه مشکلی در بروزرسانی محصول به وجود آمد.";
+include '../menu.php'; // شامل کردن فایل منو
+include('../includes/header.php');
+include('../config.php');
+try {
+    $db = new PDO("mysql:host=$db_host;dbname=$db_name;charset=utf8", $db_user, $db_pass);
+    $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+} catch (PDOException $e) {
+    echo "اتصال به پایگاه داده با خطا مواجه شد: " . $e->getMessage();
+    exit;
 }
+
+// کدهای مربوط به به‌روزرسانی محصول
+
 ?>
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>به‌روزرسانی محصول - حسابفا</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aifd+gY1fXU9JwOQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body class="bg-gray-100">
+    <div class="flex h-screen">
+        <!-- Sidebar -->
+        <?php echo getMenu(); ?>
+
+        <!-- Main Content -->
+        <div class="flex-1 p-6">
+            <h2 class="text-3xl font-bold mb-6">به‌روزرسانی محصول</h2>
+            <!-- فرم به‌روزرسانی محصول -->
+            <form action="update_product_action.php" method="post">
+                <!-- آی‌دی محصول -->
+                <div class="form-group mb-4">
+                    <label for="productId" class="block mb-2">آی‌دی محصول:</label>
+                    <input type="text" class="form-control" id="productId" name="productId" placeholder="آی‌دی محصول" required>
+                </div>
+                <!-- نام جدید محصول -->
+                <div class="form-group mb-4">
+                    <label for="newProductName" class="block mb-2">نام جدید محصول:</label>
+                    <input type="text" class="form-control" id="newProductName" name="newProductName" placeholder="نام جدید محصول" required>
+                </div>
+                <button type="submit" class="btn btn-primary mt-6">به‌روزرسانی</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="../assets/js/jquery-3.6.0.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+    <script src="../assets/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <script src="../assets/js/main.js"></script>
+    <?php include('../includes/footer.php'); ?>
+</body>
+</html>
