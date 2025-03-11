@@ -79,6 +79,57 @@
         </div>
     </div>
 
+    <!-- پاپ‌آپ لیست قیمت -->
+    <div id="priceListModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="priceListModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="priceListModalLabel">لیست قیمت</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <!-- محتوای لیست قیمت -->
+                    <div class="form-group mb-4">
+                        <input type="checkbox" class="form-check-input" id="priceSaleActive" name="priceSaleActive">
+                        <label for="priceSaleActive" class="block mb-2">قیمت فروش (IRR):</label>
+                        <input type="number" class="form-control" id="priceSale" placeholder="ریال 0">
+                    </div>
+                    <div class="form-group mb-4">
+                        <input type="checkbox" class="form-check-input" id="pricePartnerActive" name="pricePartnerActive">
+                        <label for="pricePartnerActive" class="block mb-2">همکار (IRR):</label>
+                        <input type="number" class="form-control" id="pricePartner" placeholder="ریال 0">
+                    </div>
+                    <div class="form-group mb-4">
+                        <input type="checkbox" class="form-check-input" id="priceWholesaleActive" name="priceWholesaleActive">
+                        <label for="priceWholesaleActive" class="block mb-2">عمده (IRR):</label>
+                        <input type="number" class="form-control" id="priceWholesale" placeholder="ریال 0">
+                    </div>
+                    <div class="form-group mb-4">
+                        <input type="checkbox" class="form-check-input" id="priceDollarActive" name="priceDollarActive">
+                        <label for="priceDollarActive" class="block mb-2">دلاری (USD):</label>
+                        <input type="number" class="form-control" id="priceDollar" placeholder="$ 0.00">
+                    </div>
+                    <div class="form-group mb-4">
+                        <input type="checkbox" class="form-check-input" id="priceStaffActive" name="priceStaffActive">
+                        <label for="priceStaffActive" class="block mb-2">پرسنل (IRR):</label>
+                        <input type="number" class="form-control" id="priceStaff" placeholder="ریال 0">
+                    </div>
+                    <div class="form-group mb-4">
+                        <input type="checkbox" class="form-check-input" id="priceShopActive" name="priceShopActive">
+                        <label for="priceShopActive" class="block mb-2">مغازه (IRR):</label>
+                        <input type="number" class="form-control" id="priceShop" placeholder="ریال 0">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">بستن</button>
+                    <button type="button" class="btn btn-primary">ذخیره تغییرات</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="/hesabfa/assets/js/jquery-3.6.0.min.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
