@@ -851,3 +851,40 @@
   opacity: 0.9;
 }
 
+/* محتوای فایل style.css */
+body {
+  font-family: 'Tahoma', sans-serif;
+}
+
+.navbar {
+  background-color: #343a40;
+}
+
+.navbar .nav-link {
+  color: #ffffff;
+}
+
+.sidebar {
+  background-color: #343a40;
+  color: #ffffff;
+}
+
+.sidebar .nav-link {
+  color: #ffffff;
+}
+
+.sidebar .nav-link:hover {
+  background-color: #495057;
+}
+
+.card {
+  border: 1px solid #dee2e6;
+}
+
+.card .card-header {
+  background-color: #f8f9fa;
+}
+
+.card .card-body {
+  background-color: #ffffff;
+}
