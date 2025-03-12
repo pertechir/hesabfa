@@ -10,7 +10,11 @@
                 <button type="button" class="btn btn-info">دوربین</button>
             </div>
         </div>
-
+            <!-- دکمه فعال/غیرفعال -->
+            <div class="form-check mb-4">
+                <input type="checkbox" class="form-check-input" id="isActive" name="isActive">
+                <label class="form-check-label" for="isActive">فعال / غیرفعال</label>
+            </div>
         <!-- کد حسابداری -->
         <div class="form-group mb-4">
             <label for="accountingCode" class="block mb-2">کد حسابداری:</label>
