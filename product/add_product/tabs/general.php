@@ -8,6 +8,11 @@
             <!-- سایر واحدها -->
         </select>
     </div>
+    <!-- تعداد محصول -->
+    <div class="form-group mb-4">
+            <label for="quantity" class="block mb-2">تعداد محصول:</label>
+            <input type="number" class="form-control" id="quantity" name="quantity" placeholder="تعداد محصول">
+        </div>
     <div class="form-check mb-4">
         <input type="checkbox" class="form-check-input" id="hasMultipleUnits" name="hasMultipleUnits">
         <label class="form-check-label" for="hasMultipleUnits">کالا بیش از یک واحد دارد؟</label>

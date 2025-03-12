@@ -3,18 +3,24 @@
         <!-- تصویر محصول -->
         <div class="form-group mb-4">
             <label class="block mb-2">تصویر محصول:</label>
-            <img id="productImagePreview" src="/hesabfa/uploads/default-image/default-person.png" alt="تصویر پیش‌فرض محصول" class="img-thumbnail mb-2" style="max-width: 150px; height: auto; display: block;">            <div class="mt-2">
+            <img id="productImagePreview" src="/hesabfa/uploads/default-image/default-person.png" alt="تصویر پیش‌فرض محصول" class="img-thumbnail mb-2" style="max-width: 150px; height: auto; display: block;">
+            <div class="mt-2">
                 <label for="productImage" class="btn btn-primary cursor-pointer">انتخاب</label>
                 <input type="file" id="productImage" name="productImage" style="display:none;" onchange="previewImage(this);">
                 <button type="button" class="btn btn-danger" onclick="removeImage()">حذف</button>
                 <button type="button" class="btn btn-info">دوربین</button>
             </div>
         </div>
-            <!-- دکمه فعال/غیرفعال -->
-            <div class="form-check mb-4">
-                <input type="checkbox" class="form-check-input" id="isActive" name="isActive">
-                <label class="form-check-label" for="isActive">فعال / غیرفعال</label>
-            </div>
+        <!-- دکمه فعال/غیرفعال -->
+        <div class="form-check mb-4">
+            <input type="checkbox" class="form-check-input" id="isActive" name="isActive">
+            <label class="form-check-label" for="isActive">فعال / غیرفعال</label>
+        </div>
+          <!-- دسته‌بندی -->
+          <div class="form-group mb-4">
+            <label for="category" class="block mb-2">دسته‌بندی:</label>
+            <select id="category" name="category" class="form-control"></select>
+        </div>
         <!-- کد حسابداری -->
         <div class="form-group mb-4">
             <label for="accountingCode" class="block mb-2">کد حسابداری:</label>
@@ -70,10 +76,8 @@
             <button type="button" class="btn btn-secondary" onclick="generateMainBarcode()">تولید بارکد اصلی</button>
         </div>
 
-        <!-- دسته‌بندی -->
-        <div class="form-group mb-4">
-            <label for="category" class="block mb-2">دسته‌بندی:</label>
-            <select id="category" name="category" class="form-control"></select>
-        </div>
+      
+
+        
     </div>
 </div>

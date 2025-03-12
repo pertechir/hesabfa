@@ -12,6 +12,7 @@ try {
     $productCode = $_POST['productCode']; // دریافت کد کالا از فرم
     $barcode = $_POST['barcode']; // دریافت بارکد از فرم
     $isActive = isset($_POST['isActive']) ? 1 : 0; // دریافت وضعیت فعال/غیرفعال
+    $quantity = $_POST['quantity']; // دریافت تعداد محصول از فرم
     $generalDescription = $_POST['generalDescription'];
     $category = $_POST['category']; // دریافت دسته‌بندی از فرم
     $subUnit = isset($_POST['subUnit']) ? $_POST['subUnit'] : null;
@@ -39,11 +40,12 @@ try {
         echo json_encode(['success' => false, 'message' => "محصول تکراری است."]);
     } else {
         // درج محصول جدید
-        $stmt = $db->prepare("INSERT INTO products (name, product_code, barcode, is_active, main_unit, sub_unit, conversion_factor, description, category, reorder_point, minimum_order, lead_time, sale_price, purchase_price, tax_rate, tax_description) VALUES (:name, :product_code, :barcode, :is_active, :main_unit, :sub_unit, :conversion_factor, :description, :category, :reorder_point, :minimum_order, :lead_time, :sale_price, :purchase_price, :tax_rate, :tax_description)");
+        $stmt = $db->prepare("INSERT INTO products (name, product_code, barcode, is_active, quantity, main_unit, sub_unit, conversion_factor, description, category, reorder_point, minimum_order, lead_time, sale_price, purchase_price, tax_rate, tax_description) VALUES (:name, :product_code, :barcode, :is_active, :quantity, :main_unit, :sub_unit, :conversion_factor, :description, :category, :reorder_point, :minimum_order, :lead_time, :sale_price, :purchase_price, :tax_rate, :tax_description)");
         $stmt->bindParam(':name', $productName);
         $stmt->bindParam(':product_code', $productCode);
         $stmt->bindParam(':barcode', $barcode);
         $stmt->bindParam(':is_active', $isActive);
+        $stmt->bindParam(':quantity', $quantity);
         $stmt->bindParam(':main_unit', $mainUnit);
         $stmt->bindParam(':sub_unit', $subUnit);
         $stmt->bindParam(':conversion_factor', $conversionFactor);
