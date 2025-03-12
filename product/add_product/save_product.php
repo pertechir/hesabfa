@@ -15,18 +15,30 @@ try {
     // سایر پارامترهای فرم
     // ...
 
-    $stmt = $db->prepare("INSERT INTO products (main_unit, sub_unit, conversion_factor, description) VALUES (:main_unit, :sub_unit, :conversion_factor, :description)");
-    $stmt->bindParam(':main_unit', $mainUnit);
-    $stmt->bindParam(':sub_unit', $subUnit);
-    $stmt->bindParam(':conversion_factor', $conversionFactor);
-    $stmt->bindParam(':description', $generalDescription);
+    // بررسی تکراری بودن محصول
+    $checkStmt = $db->prepare("SELECT COUNT(*) FROM products WHERE main_unit = :main_unit AND description = :description");
+    $checkStmt->bindParam(':main_unit', $mainUnit);
+    $checkStmt->bindParam(':description', $generalDescription);
+    $checkStmt->execute();
 
-    // سایر پارامترهای فرم
-    // ...
+    $count = $checkStmt->fetchColumn();
 
-    $stmt->execute();
+    if ($count > 0) {
+        echo json_encode(['success' => false, 'message' => "محصول تکراری است."]);
+    } else {
+        // درج محصول جدید
+        $stmt = $db->prepare("INSERT INTO products (main_unit, sub_unit, conversion_factor, description) VALUES (:main_unit, :sub_unit, :conversion_factor, :description)");
+        $stmt->bindParam(':main_unit', $mainUnit);
+        $stmt->bindParam(':sub_unit', $subUnit);
+        $stmt->bindParam(':conversion_factor', $conversionFactor);
+        $stmt->bindParam(':description', $generalDescription);
 
-    echo json_encode(['success' => true]);
+        // سایر پارامترهای فرم
+        // ...
+
+        $stmt->execute();
+        echo json_encode(['success' => true]);
+    }
 } catch (PDOException $e) {
     echo json_encode(['success' => false, 'message' => "خطا در ذخیره محصول: " . $e->getMessage()]);
 }
